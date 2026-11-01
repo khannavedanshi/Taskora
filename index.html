@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Taskora</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand"><span class="mark"></span><h1>Taskora</h1><span class="date" id="date"></span></div>
+      <div class="group">
+        <button id="guideBtn">How it works</button>
+        <button id="focusBtn" aria-pressed="false" data-tip="Hide DELEGATE and DROP. Shortcut: F">Focus</button>
+        <button id="clearBtn" data-tip="Remove every ticked-off task. Undo within 5 seconds">Clear done</button>
+        <select id="themeSel" aria-label="Theme">
+          <option value="dark">Dark</option>
+          <option value="slate">Light · Slate</option>
+        </select>
+      </div>
+    </header>
+    <section class="stats" id="stats" aria-label="Summary"></section>
+    <section class="matrix" id="matrix" aria-label="Priority matrix"></section>
+  </div>
+
+  <div class="modal" id="guide" hidden>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="gTitle">
+      <h2 id="gTitle">How Taskora works</h2>
+      <ol class="steps">
+        <li><b>Pick the box.</b> <span>Is it urgent (24–48 hours)? Is it important (moves your goals)? The box answers both.</span></li>
+        <li><b>Type and press Enter.</b> <span>Each box has its own input at the bottom.</span></li>
+        <li><b>Notes.</b> <span>Open Notes from the pencil in the top-left corner. Type / to pick a tag, write your task after it, then press Schedule.</span></li>
+        <li><b>Shortcuts.</b> <span>/ new task, Space complete, F focus, Esc cancel.</span></li>
+      </ol>
+      <div class="gfoot"><button class="qbtn" id="gDone">Got it</button></div>
+    </div>
+  </div>
+
+  <aside class="npanel" id="notes" hidden data-mode="right" aria-label="Notes">
+    <div class="ws" id="ws">
+      <nav class="side" hidden>
+        <button data-view="all" aria-current="true">All notes</button>
+        <div class="label">Box tags</div>
+        <div id="tagList" class="tagl"></div>
+      </nav>
+      <section class="list">
+        <div class="lhead"><span id="listTitle">Notes</span><button id="newNote" class="addbtn" aria-label="Add note">+ Add note</button></div>
+        <input class="search" id="search" placeholder="Search notes" aria-label="Search notes">
+        <ul class="nlist" id="nlist"></ul>
+      </section>
+      <section class="main">
+        <div class="topbar">
+          <span class="crumb" id="crumb">All notes</span>
+          <div class="wctl">
+            <button id="delNote" hidden aria-label="Delete note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button>
+            <button data-mode="left" aria-label="Dock left" data-tip="Dock left">◧</button>
+            <button data-mode="right" aria-label="Dock right" data-tip="Dock right">◨</button>
+            <button data-mode="full" aria-label="Full screen" data-tip="Full screen">⤢</button>
+            <button data-mode="min" aria-label="Minimize" data-tip="Minimize">–</button>
+            <button id="nClose" aria-label="Close" data-tip="Close (Esc)">✕</button>
+          </div>
+        </div>
+        <div id="noteView" class="cardspace" style="flex:1;min-height:0">
+          <div class="tools-row">
+            <div class="fmt" id="fmt">
+              <div class="grp">
+                <select id="styleSel" class="gsel" aria-label="Text style">
+                  <option value="P">Normal</option>
+                  <option value="H1">Heading 1</option>
+                  <option value="H2">Heading 2</option>
+                  <option value="H3">Heading 3</option>
+                </select>
+              </div>
+              <div class="grp">
+                <button data-cmd="bold" title="Bold"><b>B</b></button>
+                <button data-cmd="italic" title="Italic"><i>I</i></button>
+                <button data-cmd="underline" title="Underline"><u>U</u></button>
+                <button data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
+              </div>
+              <div class="grp">
+                <button data-cmd="insertUnorderedList" title="Bulleted list">•</button>
+                <button data-cmd="insertOrderedList" title="Numbered list">1.</button>
+                <button data-cmd="indent" title="Indent">→</button>
+                <button data-cmd="outdent" title="Outdent">←</button>
+              </div>
+              <div class="grp">
+                <button data-cmd="justifyLeft" title="Align left">Left</button>
+                <button data-cmd="justifyCenter" title="Align center">Center</button>
+                <button data-cmd="justifyRight" title="Align right">Right</button>
+                <button data-cmd="removeFormat" title="Clear formatting">Clear</button>
+              </div>
+              <div class="grp">
+                <button id="schedBtn" title="Schedule tagged lines into the matrix">Schedule</button>
+              </div>
+            </div>
+          </div>
+          <div class="body">
+            <input class="ntitle" id="ntitle" placeholder="Untitled" aria-label="Note title">
+            <div class="editor" id="nText" contenteditable="true" spellcheck="false" data-placeholder="Type / to pick a tag, then write the task after it."></div>
+            <div class="npre" id="nPre"></div>
+          </div>
+        </div>
+        <div id="cardView" class="cards" hidden></div>
+        <div class="bottombar"><span id="status">Saved</span><span>Ctrl/⌘ + Enter schedules tagged lines</span></div>
+      </section>
+    </div>
+  </aside>
+  <div class="slash" id="slash" hidden></div>
+  <div class="toast" id="toast" role="status"></div>
+
+  <!-- Application Scripts -->
+  <script src="js/matrix.js"></script>
+  <script src="js/notes.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
