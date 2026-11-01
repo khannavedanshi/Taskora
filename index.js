@@ -8,11 +8,11 @@ import express from 'express';
 // Import the database connection function from config folder
 import connectDB from './config/dbConnection.js';
 
-// Import controller function
-import { createTodo } from './controllers/todoController.js';
+// Import controller functions
+import { createTodo, deleteTodo } from './controllers/todoController.js';
 
-// Connect to MongoDB database before handling requests
-connectDB();
+// Connect to MongoDB database before handling requests use await here
+await connectDB();
 
 // Initialize the Express application
 const app = express();
@@ -25,6 +25,10 @@ app.use(express.json());
 
 // POST route to create a task
 app.post('/create', createTodo);
+
+// DELETE route to delete a task by ID (supports URL parameter or request body)
+app.delete('/delete/:id', deleteTodo);
+
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => {
