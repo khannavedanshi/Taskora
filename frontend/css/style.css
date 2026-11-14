@@ -109,7 +109,7 @@ h1 {
   background: var(--raise);
 }
 
-.group button[aria-pressed=true] {
+.group button.active {
   color: var(--accent);
   font-weight: 600;
 }
@@ -630,62 +630,7 @@ h1 {
   grid-template-columns: 260px minmax(0, 1fr);
 }
 
-.npanel[data-mode=left] .side, .npanel[data-mode=right] .side {
-  display: none;
-}
 
-.side {
-  border-right: 1px solid var(--border);
-  padding: 14px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  overflow: auto;
-}
-
-.side button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  text-align: left;
-  background: none;
-  border: 0;
-  border-radius: 8px;
-  padding: 7px 10px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.side button:hover {
-  color: var(--text);
-  background: var(--raise);
-}
-
-.side button[aria-current=true] {
-  color: var(--text);
-  background: var(--raise);
-  font-weight: 600;
-}
-
-.side .label {
-  font-size: 11px;
-  color: var(--muted);
-  padding: 12px 10px 4px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.tagl button {
-  font-size: 12px;
-  padding: 6px 10px;
-}
-
-.tagl code {
-  background: none;
-  border: 0;
-  padding: 0;
-  color: inherit;
-}
 
 .list {
   border-right: 1px solid var(--border);
@@ -782,7 +727,7 @@ h1 {
   background: var(--surface);
 }
 
-.nitem[aria-current=true] {
+.nitem.active {
   background: var(--raise);
   border-color: var(--border);
 }
@@ -850,7 +795,7 @@ h1 {
   color: var(--muted);
 }
 
-.wctl button:hover, .wctl button[aria-pressed=true] {
+.wctl button:hover, .wctl button.active {
   color: var(--text);
   background: var(--raise);
 }
@@ -944,9 +889,11 @@ h1 {
   min-height: 300px;
 }
 
-.editor:empty::before {
+.editor:empty::before,
+.editor:has(> br:only-child)::before {
   content: attr(data-placeholder);
   color: var(--muted);
+  pointer-events: none;
 }
 
 .editor h3 {
@@ -961,6 +908,29 @@ h1 {
 
 .editor div, .editor p {
   margin: 0;
+}
+
+.editor .note-guide {
+  color: var(--muted);
+  user-select: none;
+  cursor: default;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.editor .note-guide code {
+  color: var(--muted);
+  background: var(--raise);
+  border: 1px solid var(--border);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 12px;
 }
 
 .editor .cmd {
@@ -1002,45 +972,7 @@ h1 {
   padding: 6px 11px;
 }
 
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 10px;
-  padding: 16px;
-  align-content: start;
-  overflow: auto;
-}
 
-.card {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: var(--r);
-  padding: 12px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-height: 120px;
-  text-align: left;
-}
-
-.card:hover {
-  border-color: var(--muted);
-}
-
-.card b {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.card span {
-  font-size: 12px;
-  color: var(--muted);
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
 
 .empty {
   color: var(--muted);
@@ -1099,7 +1031,7 @@ h1 {
   padding: 7px 10px;
 }
 
-.slash button[aria-selected=true] {
+.slash button.selected {
   background: var(--raise);
 }
 

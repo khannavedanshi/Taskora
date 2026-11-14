@@ -24,18 +24,33 @@ The application requires **zero build steps** and runs natively on any modern we
 
 ```
 Taskora/
-├── index.html              # HTML shell & semantic structure
-├── css/
-│   ├── themes.css          # Design tokens & color palettes (Dark & Light · Slate)
-│   └── style.css           # 2×2 matrix grid, notes workspace, typography, media queries
-├── js/
-│   ├── matrix.js           # Eisenhower matrix model, task CRUD, and sorting engine
-│   ├── notes.js            # Notes workspace, slash tags (/do now, etc.), schedule parser
-│   └── app.js              # Event dispatcher, keyboard shortcuts, bootstrap init
-├── assets/
-│   └── favicon.svg         # Violet 2×2 matrix brand mark
-└── docs/
-    └── PRD.md              # Project specifications & technical documentation
+├── backend/                # ⭐ Complete Backend Application Code
+│   ├── config/
+│   │   └── dbConnection.js # MongoDB connection & DNS resolution
+│   ├── controllers/
+│   │   └── todoController.js # Route controller handlers (createTodo, deleteTodo)
+│   ├── models/
+│   │   └── todoModel.js    # Mongoose Todo schema and model
+│   └── index.js            # Express backend server entrypoint
+│
+├── frontend/               # ⭐ Complete Frontend Application Code
+│   ├── index.html          # HTML shell & semantic structure
+│   ├── assets/
+│   │   └── favicon.svg     # Violet 2×2 matrix brand mark
+│   ├── css/
+│   │   ├── themes.css      # Design tokens & color palettes (Dark & Light · Slate)
+│   │   └── style.css       # 2×2 matrix grid, notes workspace, typography, media queries
+│   └── js/
+│       ├── matrix.js       # Eisenhower matrix model, task CRUD, and sorting engine
+│       ├── notes.js        # Notes workspace, slash tags (/do now, etc.), schedule parser
+│       └── app.js          # Event dispatcher, keyboard shortcuts, bootstrap init
+│
+├── docs/
+│   └── PRD.md              # Project specifications & technical documentation
+├── .env                    # Environment variables (Mongo URI, Port)
+├── .gitignore              # Git ignore rules
+├── package.json            # Root project dependencies & scripts
+└── package-lock.json       # Exact dependency lockfile
 ```
 
 ---
