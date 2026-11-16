@@ -1,0 +1,29 @@
+/* Design Tokens & Theme Palettes */
+:root {
+  --accent: #8b5cf6;
+  --accent-soft: rgba(139, 92, 246, 0.14);
+  --r: 14px;
+  --pw: 440px;
+}
+
+[data-theme="dark"] {
+  --bg: #0b0b0f;
+  --surface: #15151b;
+  --raise: #1c1c24;
+  --border: #26262f;
+  --text: #ededf2;
+  --muted: #8a8a98;
+  --ring: rgba(139, 92, 246, 0.6);
+}
+
+[data-theme="slate"] {
+  --bg: #eeeff2;
+  --surface: #fbfbfc;
+  --raise: #e7e8ec;
+  --border: #c9ccd4;
+  --text: #16171c;
+  --muted: #5d616c;
+  --ring: rgba(91, 63, 209, 0.5);
+  --accent: #5b3fd1;
+  --accent-soft: rgba(91, 63, 209, 0.09);
+}
