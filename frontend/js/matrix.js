@@ -18,6 +18,9 @@ const GUIDE_KEY = 'taskora-guide-seen';  // Onboarding modal flag
 const NOTES_KEY = 'taskora-notes-v2';    // Notes notebook object
 const MODE_KEY = 'taskora-notes-mode';   // Notes panel dock mode ('left' | 'right' | 'full' | 'min')
 
+// Backend API Base URL (Render deployment)
+const API_URL = 'https://taskora-w46f.onrender.com';
+
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 
 /**
@@ -124,16 +127,16 @@ async function loadTasks() {
 
   // Attempt to fetch fresh tasks from MongoDB backend
   try {
-    const response = await fetch('http://localhost:3000/todos');
+    const response = await fetch(`${API_URL}/todos`);
     if (response.ok) {
       const serverTodos = await response.json();
       if (Array.isArray(serverTodos)) {
         tasks = serverTodos.map(todo => ({
           id: todo._id,
-          created: new Date(todo.createdAt).getTime(),
+          created: todo.createdAt ? new Date(todo.createdAt).getTime() : Date.now(),
           q: todo.quadrant || 'do',
           title: todo.title,
-          due: todo.deadline ? todo.deadline.split('T')[0] : '',
+          due: todo.deadline ? (typeof todo.deadline === 'string' ? todo.deadline.split('T')[0] : new Date(todo.deadline).toISOString().split('T')[0]) : '',
           done: todo.status === 'completed'
         }));
         saveTasks();
@@ -427,7 +430,7 @@ function toggleTask(taskId) {
   refocus(taskId);
 
   if (/^[0-9a-fA-F]{24}$/.test(String(taskId))) {
-    fetch(`http://localhost:3000/update/${taskId}`, {
+    fetch(`${API_URL}/update/${taskId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: task.done ? 'completed' : 'pending' })
@@ -513,7 +516,7 @@ function saveEdit() {
       targetTask.due = dateInputElement ? dateInputElement.value : '';
 
       if (/^[0-9a-fA-F]{24}$/.test(String(targetTask.id))) {
-        fetch(`http://localhost:3000/update/${targetTask.id}`, {
+        fetch(`${API_URL}/update/${targetTask.id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
