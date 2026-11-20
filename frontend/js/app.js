@@ -58,7 +58,7 @@ document.addEventListener('click', async event => {
     }
 
     try {
-      const reqAdd = await fetch('http://localhost:3000/create', {
+      const reqAdd = await fetch(`${API_URL}/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -104,7 +104,7 @@ document.addEventListener('click', async event => {
       // If it is a 24-character hex MongoDB ObjectId, delete from backend
       if (/^[0-9a-fA-F]{24}$/.test(taskId)) {
         try {
-          const reqDel = await fetch(`http://localhost:3000/delete/${taskId}`, {
+          const reqDel = await fetch(`${API_URL}/delete/${taskId}`, {
             method: 'DELETE'
           });
           const delRes = await reqDel.json();
@@ -267,7 +267,7 @@ document.addEventListener('change', event => {
       render();
 
       if (/^[0-9a-fA-F]{24}$/.test(taskId)) {
-        fetch(`http://localhost:3000/update/${taskId}`, {
+        fetch(`${API_URL}/update/${taskId}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ quadrant: target.value })
